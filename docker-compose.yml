@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: doc-center-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPass@2024
+      MYSQL_DATABASE: doc_center
+      MYSQL_USER: docuser
+      MYSQL_PASSWORD: DocCenter@2024
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - doc_center_mysql_data:/var/lib/mysql
+    networks:
+      - doc-center-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pRootPass@2024"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  backend:
+    build: ./backend
+    container_name: doc-center-backend
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: docuser
+      DB_PASSWORD: DocCenter@2024
+      DB_NAME: doc_center
+      JWT_SECRET: doc_center_jwt_secret_change_me_in_production
+      JWT_EXPIRES_IN: 8h
+      UPLOAD_DIR: uploads
+      MAX_FILE_SIZE: 209715200
+    volumes:
+      - doc_center_uploads:/app/uploads
+    networks:
+      - doc-center-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: doc-center-frontend
+    restart: always
+    ports:
+      - "7008:80"
+    networks:
+      - doc-center-net
+    depends_on:
+      - backend
+
+networks:
+  doc-center-net:
+    driver: bridge
+
+volumes:
+  doc_center_mysql_data:
+  doc_center_uploads:

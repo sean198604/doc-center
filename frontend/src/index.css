@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #f5f6fa;
+  color: #262626;
+}
+
+:root {
+  --primary: #1677ff;
+  --primary-light: #e6f4ff;
+  --border: #e8e8e8;
+  --text-secondary: #8c8c8c;
+  --bg-card: #ffffff;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f0f0f0; }
+::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 3px; }
+
+/* 链接 */
+a { color: var(--primary); text-decoration: none; }
+a:hover { opacity: 0.8; }
