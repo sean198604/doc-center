@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/readme-cover.png" alt="Doc Center project cover" width="100%" /></p>
+
 # 企业文档下载中心 · Doc-Center
 
 > 📁 企业内网文档下载中心 — 支持文档分类管理、全文搜索、在线下载与 PDF 预览  
